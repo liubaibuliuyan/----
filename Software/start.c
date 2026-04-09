@@ -152,6 +152,7 @@ void Start_Init(void)
     Encoder_Init();
     Motor_Init();
     Timer6_Interrupt_Init();
+		Timer7_Interrupt_Init();
     Key_Init();
     
     Protocol_Init(&g_proto_ctx);

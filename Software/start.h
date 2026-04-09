@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "encoder.h"
 #include "timer6_interrupt.h"
+#include "timer7_interrupt.h"
 #include "motor.h"
 #include "protocol.h"
 void Start_Init(void);

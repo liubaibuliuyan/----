@@ -39,3 +39,6 @@ test\stm32h7xx_it.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h
 test\stm32h7xx_it.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h
 test\stm32h7xx_it.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h
 test\stm32h7xx_it.o: ../Core/Inc/stm32h7xx_it.h
+test\stm32h7xx_it.o: ../Software/timer6_interrupt.h
+test\stm32h7xx_it.o: ../Core/Inc/tim.h
+test\stm32h7xx_it.o: ../Software/timer7_interrupt.h

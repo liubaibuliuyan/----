@@ -22,6 +22,7 @@
 #include "stm32h7xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -274,5 +275,18 @@ void TIM7_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+#include "timer6_interrupt.h"
+#include "timer7_interrupt.h"
 
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  if(htim->Instance == TIM6)
+  {
+    TIM6_Run();
+  }
+  else if(htim->Instance == TIM7)
+  {
+    TIM7_Run();
+  }
+}
 /* USER CODE END 1 */

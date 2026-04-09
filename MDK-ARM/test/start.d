@@ -52,5 +52,6 @@ test\start.o: ../Hardware/font.h
 test\start.o: ../Hardware/encoder.h
 test\start.o: ../Core/Inc/tim.h
 test\start.o: ..\Software\timer6_interrupt.h
+test\start.o: ..\Software\timer7_interrupt.h
 test\start.o: ../Hardware/motor.h
 test\start.o: ..\Software\protocol.h

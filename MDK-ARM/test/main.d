@@ -53,5 +53,6 @@ test\main.o: ../Hardware/lcd.h
 test\main.o: ../Hardware/font.h
 test\main.o: ../Hardware/encoder.h
 test\main.o: ../Software/timer6_interrupt.h
+test\main.o: ../Software/timer7_interrupt.h
 test\main.o: ../Hardware/motor.h
 test\main.o: ../Software/protocol.h

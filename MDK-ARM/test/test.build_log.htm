@@ -27,7 +27,16 @@ Project File Date:  04/09/2026
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\keil5\ARM\ARMCC\Bin'
 Build target 'test'
-"test\test.axf" - 0 Error(s), 0 Warning(s).
+compiling timer7_interrupt.c...
+..\Software\timer7_interrupt.c(30): warning:  #550-D: variable "s_ms_tick"  was set but never used
+  static uint32_t   s_ms_tick    = 0;
+..\Software\timer7_interrupt.c(32): warning:  #550-D: variable "s_t_last_ms"  was set but never used
+  static uint32_t   s_t_last_ms  = 0;
+..\Software\timer7_interrupt.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=36222 RO-data=3346 RW-data=1164 ZI-data=3236  
+FromELF: creating hex file...
+"test\test.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -50,7 +59,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
