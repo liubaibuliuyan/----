@@ -3,6 +3,9 @@
 
 #include "tim.h"
 #include <stdint.h>
+#include "encoder.h"
+#include "motor.h"
+#include "pid.h"
 
 extern volatile float    g_ctrl_speed_meas;
 extern volatile float    g_ctrl_speed_target;

@@ -54,4 +54,5 @@ test\start.o: ../Core/Inc/tim.h
 test\start.o: ..\Software\timer6_interrupt.h
 test\start.o: ..\Software\timer7_interrupt.h
 test\start.o: ../Hardware/motor.h
+test\start.o: ..\Software\pid.h
 test\start.o: ..\Software\protocol.h

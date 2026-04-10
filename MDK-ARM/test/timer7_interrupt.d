@@ -43,4 +43,3 @@ test\timer7_interrupt.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_
 test\timer7_interrupt.o: ../Hardware/encoder.h
 test\timer7_interrupt.o: ../Hardware/motor.h
 test\timer7_interrupt.o: ..\Software\pid.h
-test\timer7_interrupt.o: ..\Software\timer6_interrupt.h

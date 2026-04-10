@@ -42,3 +42,6 @@ test\stm32h7xx_it.o: ../Core/Inc/stm32h7xx_it.h
 test\stm32h7xx_it.o: ../Software/timer6_interrupt.h
 test\stm32h7xx_it.o: ../Core/Inc/tim.h
 test\stm32h7xx_it.o: ../Software/timer7_interrupt.h
+test\stm32h7xx_it.o: ../Hardware/encoder.h
+test\stm32h7xx_it.o: ../Hardware/motor.h
+test\stm32h7xx_it.o: ../Software/pid.h

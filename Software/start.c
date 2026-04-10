@@ -14,7 +14,7 @@ extern volatile uint8_t  g_ctrl_enable;
  * 私有变量
  *==========================================================*/
 static u32 key1_press_cnt = 0;
-static float target_speed_rps = -2.0f;
+static float target_speed_rps = 1.0f;
 static ProtocolContext_t g_proto_ctx;
 
 /*==========================================================
@@ -96,10 +96,14 @@ static void Task_Key(void)
 }
 
 /*==========================================================
- * LCD显示任务
+ * LCD显示任务 100ms刷新一次
  *==========================================================*/
 static void Task_LCD_Show(void)
 {
+    static uint32_t lcd_last_ms = 0;
+    if ((g_tim6_1ms_cnt - lcd_last_ms) < 100) return;
+    lcd_last_ms = g_tim6_1ms_cnt;
+
     int32_t tgt_x100 = (int32_t)(g_ctrl_speed_target * 100.0f);
     int32_t spd_x100 = (int32_t)(g_ctrl_speed_meas   * 100.0f);
 
@@ -110,12 +114,12 @@ static void Task_LCD_Show(void)
 }
 
 /*==========================================================
- * 串口定时上报任务 (200ms)
+ * 串口定时上报任务 (100ms)
  *==========================================================*/
 static void Task_USART_Report(void)
 {
     static uint32_t last_ms = 0;
-    if ((g_tim6_1ms_cnt - last_ms) < 200) return;
+    if ((g_tim6_1ms_cnt - last_ms) < 100) return;
     last_ms = g_tim6_1ms_cnt;
 
     int32_t tgt_i = (int32_t)g_ctrl_speed_target;
