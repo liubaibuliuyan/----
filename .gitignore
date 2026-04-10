@@ -1,0 +1,25 @@
+# MDK-ARM 编译产物
+*.o
+*.crf
+*.axf
+*.hex
+*.htm
+*.map
+*.dep
+*.build_log.htm
+*.uvguix.*
+*.uvproj.*
+*.lst
+*.bin
+*.elf
+*.d
+
+# 编译目录
+MDK-ARM/
+Objects/
+Listings/
+RTE/
+
+# 其他临时文件
+*.tmp
+*.log
