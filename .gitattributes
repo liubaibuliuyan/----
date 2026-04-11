@@ -1,0 +1,13 @@
+# 文本文件自动处理
+* text=auto
+
+# 代码文件统一 LF（跨平台友好）
+*.c text eol=lf
+*.h text eol=lf
+*.s text eol=lf
+*.ld text eol=lf
+
+# MDK 工程文件视为二进制，禁止换行符转换
+*.uvprojx binary
+*.uvoptx binary
+*.uvguix binary

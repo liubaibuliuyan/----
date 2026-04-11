@@ -11,6 +11,10 @@
 #include "timer7_interrupt.h"
 #include "motor.h"
 #include "protocol.h"
+#include "speed_loop.h"  
+#include "pos_loop.h"
+#include "ctrl_mode.h"
+
 void Start_Init(void);
 void Start_MainLoop(void);
 

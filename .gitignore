@@ -1,4 +1,9 @@
-# MDK-ARM 编译产物
+# ================= 不会修改的官方库（绝对不提交） =================
+Drivers/
+Middlewares/
+Utilities/
+
+# ================= MDK 编译产物（完全不提交） =================
 *.o
 *.crf
 *.axf
@@ -6,20 +11,22 @@
 *.htm
 *.map
 *.dep
-*.build_log.htm
-*.uvguix.*
-*.uvproj.*
 *.lst
 *.bin
 *.elf
 *.d
+*.lnp
+*.sct
+*.build_log.htm
 
-# 编译目录
+# MDK 工程目录与临时文件
 MDK-ARM/
 Objects/
 Listings/
 RTE/
+DebugConfig/
 
-# 其他临时文件
+# ================= 其他杂项 =================
 *.tmp
 *.log
+*.bak
