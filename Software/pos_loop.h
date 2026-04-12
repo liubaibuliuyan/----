@@ -3,20 +3,25 @@
 
 #include "main.h"
 
-#define POS_KP               0.005f
-#define POS_OUT_MAX          5.0f
-#define POS_OUT_MIN         -5.0f
+// ==================== 终极精准版：定位±2脉冲 ====================
+#define POS_KP              0.0070f
+#define POS_KI              0.0005f
+#define POS_INTEGRAL_LIMIT  500.0f
 
-#define POS_DONE_THRESHOLD   3      // 最终到位死区 ±5脉冲
+#define POS_OUT_MAX         4.5f
+#define POS_OUT_MIN        -4.5f
+#define POS_MIN_SPEED       0.08f
 
-#define POS_BRAKE1_SPEED     1.0f   // 第一制动段限速
-#define POS_BRAKE2_SPEED     0.20f  // 第二制动段限速
+#define POS_DONE_THRESHOLD  2
+#define POS_LOCK_DIST       15
 
-// ★ 制动锁定区：距目标≤此值时强制速度指令=0，靠惯性滑入死区
-// 设为15：速度0.20rps时滑行距离≈0.20×130×0.1≈2.6脉冲，能进入±5
-#define POS_LOCK_DIST        35
+#define POS_BRAKE1_SPEED    1.0f
+#define POS_BRAKE2_SPEED    0.10f
 
-#define POS_MIN_SPEED        0.18f  // 制动区外的最低有效速度
+#define POS_INTEGRAL_THRESHOLD  120
+#define POS_ERROR_DEAD_ZONE      4
+
+// ==========================================================
 
 void    PosLoop_Init(void);
 void    PosLoop_SetTarget(int32_t target_pulse, float max_speed_rps);

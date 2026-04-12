@@ -18,7 +18,7 @@ typedef enum {
 void Ctrl_SetMode(CtrlMode_t mode);
 CtrlMode_t Ctrl_GetMode(void);
 
-// 启动/停止（复用原有使能接口，此处做统一入口）
+// 启动/停止
 void Ctrl_Start(void);
 void Ctrl_Stop(void);
 

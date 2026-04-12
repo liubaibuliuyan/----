@@ -38,7 +38,7 @@ void Start_MainLoop(void)
         // 2. 协议层帧解析
         ProtocolErr_t proto_err = Protocol_Process(&g_proto_ctx);
 
-        // 【优化】只在收到有效帧（功能码非0）时打印，避免刷屏
+        // 只在收到有效帧（功能码非0）时打印，避免刷屏
         if (proto_err == PROTOCOL_OK)
         {
             if (g_proto_ctx.frame.func != 0)
