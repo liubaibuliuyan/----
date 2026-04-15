@@ -7,7 +7,7 @@
 #include "motor.h"
 
 #define CTRL_PERIOD_MS   1
-#define SPEED_TAU_MS     7.0f
+#define SPEED_TAU_MS     4.0f
 #define CTRL_PERIOD_S    ((float)CTRL_PERIOD_MS / 1000.0f)
 #define FEEDFORWARD_Kf   2750.0f
 

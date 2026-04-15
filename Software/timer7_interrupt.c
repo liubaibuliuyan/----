@@ -31,7 +31,8 @@ void TIM7_Run(void)
     if (s_tick_cnt % POS_LOOP_PERIOD_TICKS == 0)
     {
         CtrlMode_t mode = Ctrl_GetMode();
-        if (g_ctrl_enable && (mode == CTRL_MODE_POS || mode == CTRL_MODE_SPEED_POS))
+        // ===================== 修复这里 =====================
+        if (g_ctrl_enable && mode == CTRL_MODE_POS)
         {
             PosLoop_Process(g_enc_total_pulse);
         }

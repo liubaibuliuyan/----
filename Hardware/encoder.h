@@ -15,18 +15,14 @@ extern "C" {
 
 typedef enum {
     ENCODER_ID_1 = 0,
+    ENCODER_ID_2,
+    ENCODER_ID_3,
+    ENCODER_ID_4,
     ENCODER_ID_MAX
 } Encoder_IDTypeDef;
 
 void    Encoder_Init(void);
 void    Encoder_Reset(Encoder_IDTypeDef id);
-
-/**
- * @brief 读取脉冲增量并累计总数（纯硬件读取，不计算速度）
- * @param id    编码器ID
- * @param diff  输出：本次脉冲增量（带方向）
- * @param total 输出：累计脉冲总数
- */
 void    Encoder_Read(Encoder_IDTypeDef id, int16_t *diff, int32_t *total);
 
 #ifdef __cplusplus
