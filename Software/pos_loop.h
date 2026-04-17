@@ -6,7 +6,7 @@
 
 #define POS_OUT_MAX         3.0f
 #define POS_OUT_MIN        -3.0f
-#define POS_FF_K    0.00012f  // 更小前馈，柔顺不冲
+#define POS_FF_K    				0.00012f  // 更小前馈
 
 void    PosLoop_Init(void);
 void    PosLoop_SetTarget(int32_t target_pulse, float max_speed_rps);

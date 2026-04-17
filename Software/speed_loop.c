@@ -1,9 +1,6 @@
 #include "speed_loop.h"
 
-volatile float    g_ctrl_speed_meas   = 0.0f;
-volatile float    g_ctrl_speed_target = 0.0f;
-volatile int32_t  g_ctrl_total_pulse  = 0;
-volatile uint8_t  g_ctrl_enable       = 0;
+
 
 static float      s_speed_filtered = 0.0f;
 static float      s_alpha;
@@ -27,36 +24,36 @@ void Ctrl_Enable(void)
 {
     IncPID_Reset(&s_speed_pid);
     s_speed_filtered = 0.0f;
-    g_ctrl_enable    = 1;
+    g_ctrl.enable    = 1;
 }
 
 void Ctrl_Disable(void)
 {
-    g_ctrl_enable       = 0;
-    g_ctrl_speed_target = 0.0f;
+    g_ctrl.enable       = 0;
+    g_ctrl.speed_target = 0.0f;
     IncPID_Reset(&s_speed_pid);
     Motor_Control(MOTOR_ID_1, MOTOR_STOP, 0);
 }
 
 void Ctrl_Set_Target(float target_rps)
 {
-    g_ctrl_speed_target = target_rps;
+    g_ctrl.speed_target = target_rps;
     IncPID_SetTarget(&s_speed_pid, target_rps);
 }
 
 void SpeedLoop_Process(int32_t diff_pulse_1ms, int32_t total_pulse)
 {
-    g_ctrl_total_pulse = total_pulse;
+    g_ctrl.total_pulse = total_pulse;
 
     float raw_speed = (float)diff_pulse_1ms / ENCODER_COUNTS_PER_REV / CTRL_PERIOD_S;
     s_speed_filtered  = s_speed_filtered * (1.0f - s_alpha) + raw_speed * s_alpha;
-    g_ctrl_speed_meas = s_speed_filtered;
+    g_ctrl.speed_meas = s_speed_filtered;
 
-    if(g_ctrl_enable)
+    if(g_ctrl.enable)
     {
         // 调用增量PID计算
-        float pid_out   = IncPID_Calc(&s_speed_pid, g_ctrl_speed_meas);
-        float ff        = g_ctrl_speed_target * FEEDFORWARD_Kf;
+        float pid_out   = IncPID_Calc(&s_speed_pid, g_ctrl.speed_meas);
+        float ff        = g_ctrl.speed_target * FEEDFORWARD_Kf;
         float final_out = pid_out + ff;
 
         if(final_out >  14999.0f) final_out =  14999.0f;

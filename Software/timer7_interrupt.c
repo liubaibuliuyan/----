@@ -5,9 +5,8 @@
 #include "ctrl_mode.h"
 
 static uint32_t s_tick_cnt = 0;
-// 全局编码器累计变量，中断内每100μs更新
-volatile int32_t g_enc_diff_acc = 0;
-volatile int32_t g_enc_total_pulse = 0;
+// 编码器结构体，中断内每100μs更新
+volatile Enc_t g_enc;
 
 void TIM7_Run(void)
 {
@@ -17,24 +16,24 @@ void TIM7_Run(void)
 
     // 每100μs必须读取编码器，累计增量
     Encoder_Read(ENCODER_ID_1, &enc_diff, &enc_total);
-    g_enc_diff_acc += enc_diff;
-    g_enc_total_pulse = enc_total;
+    g_enc.diff_acc += enc_diff;
+    g_enc.total_pulse = enc_total;
 
     // 速度环调度：1ms一次，传入1ms累计的总脉冲
     if (s_tick_cnt % SPEED_LOOP_PERIOD_TICKS == 0)
     {
-        SpeedLoop_Process(g_enc_diff_acc, g_enc_total_pulse);
-        g_enc_diff_acc = 0; // 计算完成后清零，重新累计下一个1ms的脉冲
+        SpeedLoop_Process(g_enc.diff_acc, g_enc.total_pulse);
+        g_enc.diff_acc = 0; // 计算完成后清零，重新累计下一个1ms的脉冲
     }
 
     // 位置环调度：5ms一次，独立运行，和速度环解耦
     if (s_tick_cnt % POS_LOOP_PERIOD_TICKS == 0)
     {
         CtrlMode_t mode = Ctrl_GetMode();
-        // ===================== 修复这里 =====================
-        if (g_ctrl_enable && mode == CTRL_MODE_POS)
+        // =====================  =====================
+        if (g_ctrl.enable && mode == CTRL_MODE_POS)
         {
-            PosLoop_Process(g_enc_total_pulse);
+            PosLoop_Process(g_enc.total_pulse);
         }
     }
 
@@ -45,8 +44,8 @@ void TIM7_Run(void)
 void Timer7_Interrupt_Init(void)
 {
     s_tick_cnt = 0;
-    g_enc_diff_acc = 0;
-    g_enc_total_pulse = 0;
+    g_enc.diff_acc = 0;
+    g_enc.total_pulse = 0;
     
     SpeedLoop_Init();
     PosLoop_Init();

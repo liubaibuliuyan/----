@@ -5,16 +5,14 @@
 #include "pid.h"
 #include "encoder.h"
 #include "motor.h"
+#include "ctrl_mode.h"
 
 #define CTRL_PERIOD_MS   1
 #define SPEED_TAU_MS     4.0f
 #define CTRL_PERIOD_S    ((float)CTRL_PERIOD_MS / 1000.0f)
 #define FEEDFORWARD_Kf   2750.0f
 
-extern volatile float    g_ctrl_speed_meas;
-extern volatile float    g_ctrl_speed_target;
-extern volatile int32_t  g_ctrl_total_pulse;
-extern volatile uint8_t  g_ctrl_enable;
+
 
 void SpeedLoop_Init(void);
 void SpeedLoop_Process(int32_t diff_pulse_1ms, int32_t total_pulse);

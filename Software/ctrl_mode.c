@@ -2,16 +2,17 @@
 #include "speed_loop.h"
 #include "pos_loop.h"
 
-static CtrlMode_t s_current_mode = CTRL_MODE_SPEED;
+Ctrl_t g_ctrl;  // 全局控制结构体
 
 void Ctrl_SetMode(CtrlMode_t mode)
 {
-    s_current_mode = mode;
+    g_ctrl.mode = mode;        // 必须同步更新结构体！
+    // s_current_mode 删掉，完全用 g_ctrl
 }
 
 CtrlMode_t Ctrl_GetMode(void)
 {
-    return s_current_mode;
+    return g_ctrl.mode;        // 读结构体
 }
 
 void Ctrl_Start(void)
