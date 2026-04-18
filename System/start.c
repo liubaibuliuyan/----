@@ -4,6 +4,7 @@
  */
 #include "start.h"
 
+
 extern volatile uint32_t g_tim6_1ms_cnt;
 
 /* ---- 原有变量 ---- */
@@ -72,8 +73,8 @@ void Start_Init(void)
     Protocol_Init(&g_proto_ctx);
 
     /* ---- BMM350 新增：DWT延时初始化必须在BMM350之前 ---- */
-    DWT_Delay_Init();
-    rtrobot_bmm350_init(&g_bmm350_dev);  /* 初始化磁力计 */
+    DWT_Init();
+    BMM350_Init(&g_bmm350_dev);  /* <--- 已改名 */
 
     /* ---- 原有LCD标签 ---- */
     lcd_show_str(5, 0,   WHITE, BLACK, "KEY:");
@@ -174,7 +175,7 @@ static void Task_BMM350(void)
     if ((g_tim6_1ms_cnt - last_ms) < 20) return;
     last_ms = g_tim6_1ms_cnt;
 
-    if (rtrobot_bmm350_read(&g_bmm350_dev, &g_bmm350_data))
+    if (BMM350_Read(&g_bmm350_dev, &g_bmm350_data))  /* <--- 已改名 */
     {
         /* 串口绘图仪格式，可用Serial Studio等工具实时绘波形 */
         USART_Send_String(USART_ID_1,

@@ -1,18 +1,10 @@
-/*********************************************************
- * rtrobot_bmm350.c
- * Copyright (c) 2012 - 2024 RTrobot Inc.
- * Modified for STM32H7 project integration.
- *   - printf -> USART_Send_String
- *   - DWT delay compatible with H7
- *   - Added rtrobot_bmm350_read() for task polling
- *********************************************************/
-#include "rtrobot_bmm350.h"
+#include "bmm350_port.h"
 
 #include <math.h>
 
-#include "dwt_stm32_delay.h"
+#include "dwt_delay.h"
 #include "main.h"
-#include "rtrobot_common.h"
+#include "bmm350_i2c.h"
 #include "bmm350.h"
 #include "myusart.h"    /* 使用项目统一的串口发送接口 */
 
@@ -28,7 +20,7 @@ void bmm350_delay(uint32_t period, void *intf_ptr)
 }
 
 /* ------------------------------------------------------------------ */
-/* 错误码打印（printf → USART_Send_String）                            */
+/* 错误码打印（printf -> USART_Send_String）                            */
 /* ------------------------------------------------------------------ */
 void bmm350_error_codes_print_result(const char api_name[], int8_t rslt)
 {
@@ -82,7 +74,7 @@ void bmm350_error_codes_print_result(const char api_name[], int8_t rslt)
             USART_Send_String(USART_ID_1, "%s Error [%d] : All axis are disabled\r\n", api_name, rslt);
             break;
         case BMM350_E_PMU_CMD_VALUE:
-            USART_Send_String(USART_ID_1, "%s Error [%d] : Unexpected PMU CMD value\r\n", api_name, rslt);
+            //USART_Send_String(USART_ID_1, "%s Error [%d] : Unexpected PMU CMD value\r\n", api_name, rslt);
             break;
         default:
             USART_Send_String(USART_ID_1, "%s Error [%d] : Unknown error code\r\n", api_name, rslt);
@@ -93,7 +85,7 @@ void bmm350_error_codes_print_result(const char api_name[], int8_t rslt)
 /* ------------------------------------------------------------------ */
 /* 初始化                                                               */
 /* ------------------------------------------------------------------ */
-void rtrobot_bmm350_init(struct bmm350_dev *dev)
+void BMM350_Init(struct bmm350_dev *dev)
 {
     int8_t  rslt = BMM350_OK;
     uint8_t int_ctrl, err_reg_data = 0;
@@ -103,9 +95,11 @@ void rtrobot_bmm350_init(struct bmm350_dev *dev)
     /* 填充设备结构体 */
     dev_addr        = BMM350_I2C_ADSEL_SET_LOW;
     dev->intf_ptr   = &dev_addr;
-    dev->read       = rtrobot_I2C_ReadCommand;
-    dev->write      = rtrobot_I2C_WriteCommand;
+    dev->read       = bmm350_i2c_read;
+    dev->write      = bmm350_i2c_write;
     dev->delay_us   = bmm350_delay;
+		
+
 
     /* 初始化芯片 */
     rslt = bmm350_init(dev);
@@ -192,7 +186,7 @@ void rtrobot_bmm350_init(struct bmm350_dev *dev)
 /* ------------------------------------------------------------------ */
 /* 读取补偿后磁场数据（有新数据时打印，供调试用）                        */
 /* ------------------------------------------------------------------ */
-void rtrobot_bmm350_test_compensated_magnetometer(struct bmm350_dev *dev)
+void BMM350_Test_Compensated(struct bmm350_dev *dev)
 {
     uint8_t int_status = 0;
     int8_t  rslt;
@@ -215,7 +209,7 @@ void rtrobot_bmm350_test_compensated_magnetometer(struct bmm350_dev *dev)
 /* ------------------------------------------------------------------ */
 /* 读取原始数据（供调试用）                                             */
 /* ------------------------------------------------------------------ */
-void rtrobot_bmm350_test_raw(struct bmm350_dev *dev)
+void BMM350_Test_Raw(struct bmm350_dev *dev)
 {
     uint8_t int_status = 0;
     int8_t  rslt;
@@ -247,7 +241,7 @@ void rtrobot_bmm350_test_raw(struct bmm350_dev *dev)
 /* 带返回值的读取接口，供start.c的Task_BMM350()调用                     */
 /* 返回值：1=有新数据并已填入out，0=无新数据                            */
 /* ------------------------------------------------------------------ */
-uint8_t rtrobot_bmm350_read(struct bmm350_dev *dev, BMM350_Data_t *out)
+uint8_t BMM350_Read(struct bmm350_dev *dev, BMM350_Data_t *out)
 {
     uint8_t int_status = 0;
     int8_t  rslt;

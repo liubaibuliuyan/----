@@ -1,29 +1,25 @@
 #include "speed_loop.h"
 
-
-
-static float      s_speed_filtered = 0.0f;
-static float      s_alpha;
-// 替换为增量式PID结构体
-static IncPID_t   s_speed_pid;
+// 速度环专用滤波器（独立模块）
+static LPF1_t    s_speed_lpf;
+static IncPID_t  s_speed_pid;
 
 void SpeedLoop_Init(void)
 {
-    s_alpha = (float)CTRL_PERIOD_MS / (SPEED_TAU_MS + (float)CTRL_PERIOD_MS);
+    // 初始化一阶低通滤波器
+    LPF1_Init(&s_speed_lpf, SPEED_TAU_MS, (float)CTRL_PERIOD_MS);
 
     // 增量PID初始化：周期1ms
     IncPID_Init(&s_speed_pid,
                 160.0f, 0.03f, 0,
                 CTRL_PERIOD_S,
                 -14999.0f, 14999.0f);
-
-    s_speed_filtered = 0.0f;
 }
 
 void Ctrl_Enable(void)
 {
     IncPID_Reset(&s_speed_pid);
-    s_speed_filtered = 0.0f;
+    LPF1_Reset(&s_speed_lpf);   // 重置滤波器
     g_ctrl.enable    = 1;
 }
 
@@ -32,6 +28,7 @@ void Ctrl_Disable(void)
     g_ctrl.enable       = 0;
     g_ctrl.speed_target = 0.0f;
     IncPID_Reset(&s_speed_pid);
+    LPF1_Reset(&s_speed_lpf);   // 重置滤波器
     Motor_Control(MOTOR_ID_1, MOTOR_STOP, 0);
 }
 
@@ -45,9 +42,11 @@ void SpeedLoop_Process(int32_t diff_pulse_1ms, int32_t total_pulse)
 {
     g_ctrl.total_pulse = total_pulse;
 
+    // 1. 计算原始速度
     float raw_speed = (float)diff_pulse_1ms / ENCODER_COUNTS_PER_REV / CTRL_PERIOD_S;
-    s_speed_filtered  = s_speed_filtered * (1.0f - s_alpha) + raw_speed * s_alpha;
-    g_ctrl.speed_meas = s_speed_filtered;
+    
+    // 2. 调用独立滤波模块（核心改动）
+    g_ctrl.speed_meas = LPF1_Apply(&s_speed_lpf, raw_speed);
 
     if(g_ctrl.enable)
     {

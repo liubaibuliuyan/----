@@ -4,7 +4,7 @@
 #include "pos_loop.h"
 #include "ctrl_mode.h"
 
-static uint32_t s_tick_cnt = 0;
+static volatile uint32_t s_tick_cnt = 0;
 // 编码器结构体，中断内每100μs更新
 volatile Enc_t g_enc;
 

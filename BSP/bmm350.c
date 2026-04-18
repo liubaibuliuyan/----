@@ -1422,11 +1422,11 @@ static int8_t read_out_raw_data(float* out_data, struct bmm350_dev* dev)
             out_data[2] = (float)raw_data.raw_zdata * lsb_to_ut_degc[2];
             out_data[3] = (float)raw_data.raw_data_t * lsb_to_ut_degc[3];
 
-            if (out_data[3] > 0.0)
+            if (out_data[3] > 0.0f)
             {
                 temp = (float)(out_data[3] - (1 * 25.49));
             }
-            else if (out_data[3] < 0.0)
+            else if (out_data[3] < 0.0f)
             {
                 temp = (float)(out_data[3] - (-1 * 25.49));
             }

@@ -18,11 +18,11 @@ extern "C" {
 #include "ctrl_mode.h"
 #include "protocol.h"
 #include "timer6_interrupt.h"
-	#include "timer7_interrupt.h"
+#include "timer7_interrupt.h"
 
 /* ---- BMM350 新增 ---- */
-#include "rtrobot_bmm350.h"
-#include "dwt_stm32_delay.h"
+#include "bmm350_port.h"
+#include "dwt_delay.h"
 /* --------------------- */
 
 extern volatile uint32_t g_tim6_1ms_cnt;
